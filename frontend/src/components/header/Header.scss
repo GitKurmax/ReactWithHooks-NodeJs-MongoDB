@@ -1,0 +1,14 @@
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    padding: 0 40px;
+    background: linear-gradient(to top,rgba(105,220,235,1) 70%, #fff 100%);
+    position: fixed;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    z-index: 1000;
+    color: #fff;
+    top: 0;
+}

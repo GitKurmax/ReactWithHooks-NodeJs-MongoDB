@@ -1,0 +1,13 @@
+.put-container {
+    width: 100%;
+    max-width: 650px;
+    padding: 40px;
+}
+
+.ui.button {
+    background: linear-gradient(to top,rgba(105,220,235,0.8) 70%, #fff 100%) !important;
+}
+
+.ui.button.disabled {
+    background: linear-gradient(to top,rgba(105,220,235,1) 70%, #fff 100%) !important;
+}

@@ -1,0 +1,20 @@
+.list-container {
+    width: 100%;
+    height: calc(100vh - 110px);
+    padding: 30px;
+    overflow-Y: scroll;
+}
+
+.cell-position {
+    width: 50px;
+    text-align: center !important;
+}
+
+.cell-edit {
+    text-align: center !important;
+    width: 100px !important;
+}
+
+i.edit.link.icon {
+    margin-right: 20px;
+}
