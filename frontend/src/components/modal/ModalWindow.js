@@ -1,20 +1,11 @@
-import React, { Component } from 'react'
-import { Button, Icon, Modal, Form } from 'semantic-ui-react'
-import './Modal.scss'
+import React, { useState } from 'react';
+import { Button, Icon, Modal, Form } from 'semantic-ui-react';
+import './Modal.scss';
 
-export default class ModalWindow extends Component {
+const ModalWindow = (props) => {
+  const [editUser, setEditUser] = useState({name: props.name || '', age: props.age || ''});
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      name: this.props.name || '',
-      age: this.props.age || ''
-    }
-    
-  }
-
-  handleChange(field, event) {
+  const handleChange = (field, event) => {
     if (field === 'name') {
         this.setState({
             name: event.target.value
@@ -27,23 +18,22 @@ export default class ModalWindow extends Component {
     
   }
 
-  handleClose = (action) => {
-    this.props.closeModal();
+  const handleClose = (action) => {
+    props.closeModal();
     if (action === 'delete') {
-      this.props.deleteUser();
+      props.deleteUser();
     }
     if (action === 'edit') {
-      this.props.editUser(this.state.name, this.state.age);
+      props.editUser(editUser.name, editUser.age);
     }
   }
 
-  render() {
     return (
       <React.Fragment>
-        {this.props.showDelete && 
+        {props.showDelete && 
           <Modal
-          open={this.props.open}
-          onClose={this.handleClose}
+          open={props.open}
+          onClose={handleClose}
           basic
           size='small'
           >
@@ -51,20 +41,20 @@ export default class ModalWindow extends Component {
             <h3>Are you shure?</h3>
           </Modal.Content>
           <Modal.Actions>
-            <Button onClick={() => this.handleClose('delete')} inverted>
+            <Button onClick={() => handleClose('delete')} inverted>
               <Icon name='checkmark' /> Yes
             </Button>
-            <Button onClick={() => this.handleClose('close')} inverted>
+            <Button onClick={() => handleClose('close')} inverted>
               <Icon name='checkmark' /> No
             </Button>
           </Modal.Actions>
           </Modal>
         }
 
-        {this.props.showEdit && 
+        {props.showEdit && 
           <Modal
-          open={this.props.open}
-          onClose={this.handleClose}
+          open={props.open}
+          onClose={handleClose}
           basic
           size='small'
           >
@@ -74,24 +64,24 @@ export default class ModalWindow extends Component {
               <Form.Field>
                   <label>Name</label>
                   <input placeholder='Name' 
-                         value={this.state.name}
-                         onChange={(e) => this.handleChange('name', e)}
+                         value={editUser.name}
+                         onChange={(e) => handleChange('name', e)}
                   />
               </Form.Field>
               <Form.Field>
                   <label>Age</label>
                   <input placeholder='Age'
-                         value={this.state.age}
-                         onChange={(e) => this.handleChange('age', e)}
+                         value={editUser.age}
+                         onChange={(e) => handleChange('age', e)}
                   />
               </Form.Field>
           </Form>
           </Modal.Content>
           <Modal.Actions>
-            <Button onClick={() => this.handleClose('edit')} inverted>
+            <Button onClick={() => handleClose('edit')} inverted>
               <Icon name='checkmark' /> Yes
             </Button>
-            <Button onClick={() => this.handleClose('close')} inverted>
+            <Button onClick={() => handleClose('close')} inverted>
               <Icon name='checkmark' /> No
             </Button>
           </Modal.Actions>
@@ -99,5 +89,6 @@ export default class ModalWindow extends Component {
         }
     </React.Fragment>
     )
-  }
 }
+
+export default ModalWindow;

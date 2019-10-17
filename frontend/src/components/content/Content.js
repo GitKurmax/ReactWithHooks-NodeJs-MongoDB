@@ -1,34 +1,36 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import List from '../list/List';
 import Put from '../put/Put';
 import Loader from '../loader/Loader'
 import './Content.scss';
 
-export default class Content extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: [],
-            update: false,
-            showLoader: false,
+const Content = (props) => {
+    const [data, setData ] = useState([]);
+    const [update, setUpdate ] = useState(false);
+    const [showLoaderTrigger, setShowLoaderTrigger ] = useState(true);
+    const [isDataLoaded, setIsDataLoaded ] = useState(false);
+    const [editedNames, setEditedNames ] = useState({
             addName: '',
             addAge: ''
-        };
+        });
 
-        this.updateData = this.updateData.bind(this);
-        this.showLoader = this.showLoader.bind(this);
-        this.getAll = this.getAll.bind(this);
-    }
+    useEffect(() => {
+      if(!isDataLoaded) {
+        setShowLoaderTrigger(true);
+        getAll();
+      }  
+    },[showLoaderTrigger])
 
-    componentDidMount() {
-        this.showLoader();
-        this.getAll();
-      }
-
-    getAll() {
-        fetch("http://localhost:3100/api/getAll")
+    const getAll = () => {
+      
+      fetch("http://localhost:3100/api/getAll")
         .catch(err => console.log('Error in componentDidMount: ' + err))
-        .then(response => response.json())
+        .then(response => {
+            if (!response) {
+                return [];
+            }
+            return response.json()
+        })
         .then(data => {
           const dataToRender = data.map((user, index) => {
             return {
@@ -39,36 +41,33 @@ export default class Content extends Component {
             } 
           });
 
-          this.setState({
-              data: dataToRender
-          })
-          this.showLoader();
+          setData(dataToRender)
+          setIsDataLoaded(true)
+          setShowLoaderTrigger(false);
+           //showLoader();
       });
     }
 
-    updateData() {
-        this.getAll();
+    const updateData = () => {
+        getAll();
     }
 
-    showLoader() {
-        this.setState((state) => {
-            return {
-                showLoader: state.showLoader ? false : true
-            }
-        })
-    }
+    // const showLoader = () => {
+    //     setShowLoaderTrigger(showLoaderTrigger ? false : true);
+    // }
 
-    render() {
-        return (
-            <div className="content-container">
-                {this.state.showLoader && <Loader/>}
-                <List data = {this.state.data}
-                      updateData = {this.state.update}
-                      showLoader = {this.showLoader}
-                      toggleUpdateData = {this.updateData}
-                    />
-                <Put updateData = {this.updateData} showLoader = {this.showLoader}/>
-            </div>
-        )
-    }
+    return (
+        <div className="content-container">
+            {showLoaderTrigger && <Loader/>}
+            <List data = {data}
+                    showLoader = {setShowLoaderTrigger}
+                    toggleUpdateData = {updateData}
+                />
+            <Put updateData = {updateData}
+              showLoader = {setShowLoaderTrigger}
+            />
+        </div>
+    )
 }
+
+export default Content;
