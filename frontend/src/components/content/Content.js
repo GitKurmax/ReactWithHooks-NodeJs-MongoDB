@@ -3,8 +3,10 @@ import List from '../list/List';
 import Put from '../put/Put';
 import Loader from '../loader/Loader'
 import './Content.scss';
+import { useSelector, useDispatch } from 'react-redux';
 
 const Content = (props) => {
+    const reduxData = useSelector(state => state.data);
     const [data, setData ] = useState([]);
     const [update, setUpdate ] = useState(false);
     const [showLoaderTrigger, setShowLoaderTrigger ] = useState(true);
@@ -13,6 +15,8 @@ const Content = (props) => {
             addName: '',
             addAge: ''
         });
+
+    console.log(reduxData);
 
     useEffect(() => {
       if(!isDataLoaded) {
